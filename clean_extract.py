@@ -20,7 +20,10 @@ def load_data(path):
             author_frame = current_author_frame.groupby("author").agg("np.sum")
             domain_frame = current_domain_frame.groupby("domain").agg("np.sum")
     author_frame = DataFrame(author_frame["score"]["sum"]/author_frame["score"]["size"])
-    author_frame.rename(index=str,columns={0:"author_popularity"})
+    author_frame.reset_index(inplace=True)
+    domain_frame.reset_index(inplace=True)
+    author_frame.rename(index=str,columns={0:"author_popularity","index":"author"})
+    domain_frame.rename(index=str,columns={0:"domain_popularity","index":"domain"})
     return (train_frame,author_frame,domain_frame,subreddit_frame)
 
 def feature_extract(current_frame,filename):
